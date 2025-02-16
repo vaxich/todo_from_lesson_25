@@ -13,26 +13,26 @@ export type FilterValueType = "All" | "Active" | "Completed"
 
 export const App = () => {
 
-  const [tasks, setTasks] = useState<TasksType[]> ([
-    { id: '1', title: 'HTML&CSS', isDone: true },
-    { id: '2', title: 'JS', isDone: true },
-    { id: '3', title: 'React', isDone: false },
-    { id: '4', title: 'Redux', isDone: false },
-    { id: '5', title: 'TypeScript', isDone: false },
+  const [tasks, setTasks] = useState<TasksType[]>([
+    { id: crypto.randomUUID(), title: 'HTML&CSS', isDone: true },
+    { id: crypto.randomUUID(), title: 'JS', isDone: true },
+    { id: crypto.randomUUID(), title: 'React', isDone: false },
+    { id: crypto.randomUUID(), title: 'Redux', isDone: false },
+    { id: crypto.randomUUID(), title: 'TypeScript', isDone: false },
   ]);
 
   const [filter, setFilter] = useState<FilterValueType>("All");
 
-  // let tasks = [
-  //   { id: '1', title: 'HTML&CSS', isDone: true },
-  //   { id: '2', title: 'JS', isDone: true },
-  //   { id: '3', title: 'React', isDone: false },
-  //   { id: '4', title: 'Redux', isDone: false },
-  //   { id: '5', title: 'TypeScript', isDone: false },
-  // ]
 
+
+  const creatTask = (newTaskTitle: string) => {
+    const newTask = { id: crypto.randomUUID(), title: newTaskTitle, isDone: false }
+    let nextState = [newTask, ...tasks]
+    setTasks(nextState)
+    //alert("таск добавлен")
+  }
   const deleteTask = (taskId: string) => {
-    setTasks(tasks.filter( task => task.id != taskId))
+    setTasks(tasks.filter(task => task.id != taskId))
     // tasks = tasks.filter( task => task.id != taskId)
     // alert(taskId)
   }
@@ -43,21 +43,22 @@ export const App = () => {
 
   let filteredTasks = tasks;
   if (filter === "Active") {
-    filteredTasks = tasks.filter( task => !task.isDone)
+    filteredTasks = tasks.filter(task => !task.isDone)
   }
   if (filter === "Completed") {
-    filteredTasks = tasks.filter( task => task.isDone)
+    filteredTasks = tasks.filter(task => task.isDone)
   }
 
   return (
     <div className="App">
-      <TodolistItem 
-      title='Что учить' 
-      tasks={filteredTasks} 
-      deleteTask = {deleteTask} 
-      changeFilter = {changeFilter}
+      <TodolistItem
+        title='Что учить'
+        tasks={filteredTasks}
+        creatTask={creatTask}
+        deleteTask={deleteTask}
+        changeFilter={changeFilter}
       />
-      
+
 
     </div>
   );
