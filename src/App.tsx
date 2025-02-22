@@ -13,6 +13,10 @@ export type FilterValueType = "All" | "Active" | "Completed"
 
 export const App = () => {
 
+
+
+
+
   const [tasks, setTasks] = useState<TasksType[]>([
     { id: crypto.randomUUID(), title: 'HTML&CSS', isDone: true },
     { id: crypto.randomUUID(), title: 'JS', isDone: true },
@@ -41,6 +45,17 @@ export const App = () => {
     setFilter(newFilterValue)
   }
 
+  const changeTaskStatus = (taskId: string, isDone: boolean) => {
+
+    const newState = tasks.map( task => task.id === taskId ? {...task, isDone: isDone } : task)
+    setTasks(newState)
+    // const task = tasks.find(task => task.id === taskId)
+    // if (task) {
+    //   task.isDone = isDone
+    //   setTasks([...tasks])
+    // }
+  }
+
   let filteredTasks = tasks;
   if (filter === "Active") {
     filteredTasks = tasks.filter(task => !task.isDone)
@@ -53,10 +68,12 @@ export const App = () => {
     <div className="App">
       <TodolistItem
         title='Что учить'
+        filter = {filter}
         tasks={filteredTasks}
         creatTask={creatTask}
         deleteTask={deleteTask}
         changeFilter={changeFilter}
+        changeTaskStatus={changeTaskStatus}
       />
 
 
